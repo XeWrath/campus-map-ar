@@ -161,13 +161,31 @@ function WebcamBackground({ onStop }: { onStop: () => void }) {
     let stream: MediaStream | null = null;
     async function startCamera() {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        // Try rear camera first (for mobile), then front camera, then any camera
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        } catch {
+          console.warn("Kamera belakang tidak tersedia, mencoba kamera depan...");
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+          } catch {
+            console.warn("facingMode tidak didukung, mencoba kamera apa saja...");
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          }
+        }
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
       } catch (err) {
         console.error("Gagal membuka kamera:", err);
-        alert("Gagal membuka kamera. Pastikan browser memiliki izin akses kamera.");
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        if (errorMessage.includes("NotAllowedError") || errorMessage.includes("Permission")) {
+          alert("Izin kamera ditolak. Buka pengaturan browser → izinkan akses kamera untuk localhost:3000");
+        } else if (errorMessage.includes("NotFoundError") || errorMessage.includes("DevicesNotFound")) {
+          alert("Tidak ditemukan kamera pada perangkat ini.");
+        } else {
+          alert("Gagal membuka kamera: " + errorMessage);
+        }
         onStop();
       }
     }
