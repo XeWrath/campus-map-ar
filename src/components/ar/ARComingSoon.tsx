@@ -55,7 +55,7 @@ export function ARComingSoon() {
               for the future AR experience.
             </p>
             <ul className="mt-4 space-y-2 text-xs text-slate-500">
-              <li>WebXR features planned: {arConfig.webXrRequiredFeatures.join(", ")}</li>
+              <li>WebXR features planned: hit-test, dom-overlay, local-floor</li>
               <li>Status: {arConfig.enabled ? "enabled" : "disabled (placeholder)"}</li>
             </ul>
           </div>

@@ -2,12 +2,15 @@
   "name": "campus-map-web",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "node scripts/patch-mindar.js"
+    "postinstall": "node scripts/patch-mindar.js || true"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -17,7 +20,6 @@
     "clsx": "^2.1.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.16.0",
-    "mind-ar": "^1.2.5",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
