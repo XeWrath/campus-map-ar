@@ -9,9 +9,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Turbopack is the default bundler in Next.js 16
+  turbopack: {},
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // mind-ar has conditional require('fs') for Node.js detection
+      // Fallback for any packages that try to require Node.js built-ins
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
